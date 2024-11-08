@@ -6,7 +6,7 @@ import org.openqa.selenium.WebDriver;
 import base.BasePage;
 
 public class OrderDetailsPage extends BasePage {
-  private String title = "Temu";
+  private String title = "Temu | Order Detail";
   private By priceAdjustmentButton = By.xpath("//span[text()='Price adjustment']//parent::div[@role='button']");
   private By orderItemDescription = By.xpath("//img[@aria-label='goods banner']/../following-sibling::div/span[@role='button']//span");
   public OrderDetailsPage(WebDriver driver) {
