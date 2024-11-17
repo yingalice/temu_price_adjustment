@@ -6,22 +6,18 @@ import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 import org.openqa.selenium.TimeoutException;
 
-import com.temu.pages.HomePage;
-import com.temu.pages.login.LoginModalPage;
 import com.temu.pages.orders.AllOrdersPage;
 import com.temu.pages.orders.OrderDetailsPage;
 import com.temu.pages.orders.PriceAdjustmentModal;
+import com.temu.pages.orders.PriceAdjustmentPage;
+import com.temu.pages.orders.SelectRefundMethodModal;
+
 import base.BaseTest;
 
 public class PriceDropTests extends BaseTest {
   @Test
   public void checkForPriceDrop() {
-    String email = System.getenv("TEMU_EMAIL");
-    String password = System.getenv("TEMU_PASSWORD");
-    
-    // Login and go to the main Orders page
-    LoginModalPage loginModal = new LoginModalPage(driver);
-    HomePage homePage = loginModal.loginIntoApplication(email, password);
+    // Go to main orders page
     AllOrdersPage allOrdersPage = homePage.goToOrdersAndAccounts();
 
     // Click into each individual order, and attempt to get a price adjustment
@@ -29,8 +25,6 @@ public class PriceDropTests extends BaseTest {
     // Stop when the price adjustment button is missing from the order (past 30 day price guarantee)
     // OR there are no more orders to check
     int i = 0;
-    OrderDetailsPage orderDetailsPage;
-    PriceAdjustmentModal priceAdjustmentModal;
     while (true) {
       // Must get each order "link" (<div>, not <a>) again after clicking "Back", 
       // otherwise you get StaleElementReferenceException
@@ -45,23 +39,45 @@ public class PriceDropTests extends BaseTest {
       }
 
       // Go to each individual order page, and click the "Price adjustment" button
-      // Print a message if the price has dropped (handle manually afterwards, as I don't have any examples yet on how to claim the refund)
-      // Click the browser's "Back" button to go to the main Orders page
-      orderDetailsPage = allOrdersPage.clickOrderDetailLink(links.get(i));
+      // If the button is missing, it means it's past the 30-day price guarantee, 
+      // so stop checking the remaining older orders
+      OrderDetailsPage orderDetailsPage = allOrdersPage.clickOrderDetailLink(links.get(i));
+      String orderItemName = orderDetailsPage.getOrderItemName();
       try {
-        priceAdjustmentModal = orderDetailsPage.clickPriceAdjustmentButton();
+        orderDetailsPage.clickPriceAdjustmentButton();
       } catch (TimeoutException e) {
         System.out.println("- [PRICE ADJUSTMENT BUTTON MISSING (30 days)]: \n" +
-                            orderDetailsPage.getOrderItemDescription() + "\n");
+                            orderItemName + "\n");
         break;
       }
-      String actualText = priceAdjustmentModal.getPriceAdjustmentHeaderText();
-      String expectedText = "Sorry";
-      softAssert.assertTrue(actualText.contains(expectedText), 
-                            "- [PRICE DROP]: \n" + 
-                            orderDetailsPage.getOrderItemDescription() + "\n");
-      utility.goBack();
-      i++;
+
+      // After clicking the price adjustment button, it either leads to
+      // 1) modal saying sorry (price did not drop)
+      // OR
+      // 2) price adjustment page (price dropped)
+      // Check which one it is, and take the appropriate action
+      try {
+        // Price has not dropped (modal) - Confirm text contains "Sorry"
+        PriceAdjustmentModal priceAdjustmentModal = new PriceAdjustmentModal(driver);
+        String actualText = priceAdjustmentModal.getPriceAdjustmentHeaderText();
+        String expectedText = "Sorry";
+        softAssert.assertTrue(actualText.contains(expectedText), 
+                              "- Expected modal containing " + "'" + expectedText + "'" + " for item: \n" + 
+                              orderItemName + ",\n" +
+                              "but got " + "'" + actualText + "'\n");
+      } catch (TimeoutException e) {
+        // Price has dropped (new page) - Request price adjustment and select temu credit as the refund method
+        PriceAdjustmentPage priceAdjustmentPage = new PriceAdjustmentPage(driver);
+        SelectRefundMethodModal selectRefundMethodModal = priceAdjustmentPage.clickRequestPriceAdjustmentButton();
+        priceAdjustmentPage = selectRefundMethodModal.requestTemuCreditRefund();
+        System.out.println("- [PRICE DROP!!!]: \n" +
+                            orderItemName + "\n" +
+                            "Refund amount: " + priceAdjustmentPage.getRefundAmount() + "\n");
+        utility.goBack();  // Back to individual order page
+      }
+
+      utility.goBack();  // Back to list of all orders
+      i++;  // Go to next order
     }
     softAssert.assertAll();
   }

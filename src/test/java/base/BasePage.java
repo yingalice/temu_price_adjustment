@@ -8,23 +8,13 @@ public class BasePage {
   protected WebDriver driver;
   protected Utility utility;
 
-  public BasePage(WebDriver driver) {
+  public BasePage(WebDriver driver, String title) {
     this.driver = driver;
     utility = new Utility(driver);
+    utility.waitTitleContains(title);
   }
 
   public WebDriver getDriver() {
     return driver;
-  }
-
-  public void verifyPageTitle(String title) {
-    utility.waitTitleContains(title);
-    String actualTitle = driver.getTitle();
-
-    if (!actualTitle.equals(title)) {
-      throw new IllegalStateException("Wrong page: " + 
-                                      "\n Actual title: " + actualTitle + 
-                                      "\n Expected title: " + title + "\n");
-    }
   }
 }

@@ -9,15 +9,14 @@ import org.openqa.selenium.WebElement;
 import base.BasePage;
 
 public class AllOrdersPage extends BasePage {
-  private String title = "Temu | Orders";
+  public static String title = "Temu | Orders";
 
   private By viewOrderDetailsLinks = By.xpath("//span[@role='link' and text()='View order details']//parent::div//preceding-sibling::div/div[1][not(contains(text(), 'Refunded'))]");
   private By viewMoreButton = By.xpath("//span[text()='View more']/parent::div[@role='button']");
   private By viewMoreLoadingStatus = By.xpath("//span[text()='Loading...']");
 
   public AllOrdersPage(WebDriver driver) {
-    super(driver);
-    verifyPageTitle(title);
+    super(driver, title);
   }
 
   public void clickViewMoreButton() {

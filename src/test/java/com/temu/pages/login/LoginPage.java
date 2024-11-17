@@ -7,17 +7,16 @@ import com.temu.pages.HomePage;
 
 import base.BasePage;
 
-public class LoginModalPage extends BasePage {
-  private String title = "Temu | & Login";
+public class LoginPage extends BasePage {
+  public static String title = "Temu | & Login";
   
   private By emailField = By.xpath("//div[text()='Enter email']/following-sibling::div//input");
   private By passwordField = By.xpath("//div[text()='Password']/following-sibling::div//input");
   private By continueButton = By.xpath("//button[@id='submit-button']");
   private By submitButton = By.xpath("//button[@id='submit-button']");
 
-  public LoginModalPage(WebDriver driver) {
-    super(driver);
-    verifyPageTitle(title);
+  public LoginPage(WebDriver driver) {
+    super(driver, title);
   }
   
   public void typeEmail(String email) {

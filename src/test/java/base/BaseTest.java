@@ -8,6 +8,8 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.asserts.SoftAssert;
 
 import com.temu.pages.HomePage;
+import com.temu.pages.login.LoginPage;
+
 import utilities.Utility;
 
 public class BaseTest {
@@ -24,10 +26,19 @@ public class BaseTest {
   }
   
   @BeforeMethod
-  public void openTemu() {
-    driver.get(url);
+  public void setUpTools() {
     utility = new Utility(driver);
     softAssert = new SoftAssert();
+  }
+
+  @BeforeMethod
+  public void login() {
+    driver.get(url);
+    String email = System.getenv("TEMU_EMAIL");
+    String password = System.getenv("TEMU_PASSWORD");
+    
+    LoginPage loginPage = new LoginPage(driver);
+    homePage = loginPage.loginIntoApplication(email, password);  
   }
 
   @AfterClass
