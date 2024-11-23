@@ -3,7 +3,6 @@
 ## About
 - Automatically checks if any items have dropped in price (30 day price guarantee)
 - If so, request a price adjustment in the form of temu credit
-  - NOTE: Could not test if the refund works, due to lack of examples (need items with a price drop to test)
 
 ## Setup
 - Create login environment variables: `TEMU_EMAIL` and `TEMU_PASSWORD`
