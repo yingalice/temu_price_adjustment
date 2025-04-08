@@ -4,7 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
 public class SelectRefundMethodModal extends PriceAdjustmentPage {
-  private By receiveInSecondsRadioButton = By.xpath("//span[text()='Receive in seconds']/ancestor::div[@role='combobox']/span[@role='radio']");
+  private By receiveInSecondsRadioButton = By.xpath("//span[text()='Receive in seconds']/ancestor::div[@role='none']/span[@role='radio']");
   private By submitButton = By.xpath("//div[@role='button']/span[text()='Submit']");
 
   public SelectRefundMethodModal(WebDriver driver) {

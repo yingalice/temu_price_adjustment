@@ -24,6 +24,7 @@ public class HomePage extends BasePage {
   }
 
   public AllOrdersPage goToOrdersAndAccounts() {
+    utility.scrollToTop();  // After login, it auto-scrolls down.  Scroll back up to expose the header
     utility.click(ordersAndAccountsButton);
     return new AllOrdersPage(driver);
   }

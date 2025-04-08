@@ -8,9 +8,9 @@ import com.temu.pages.HomePage;
 import base.BasePage;
 
 public class LoginPage extends BasePage {
-  public static String title = "Temu | & Login";
+  public static String title = "Temu | Register & Login";
   
-  private By emailField = By.xpath("//div[text()='Enter email']/following-sibling::div//input");
+  private By emailField = By.xpath("//div[text()='Please enter your email address']/following-sibling::div//input");
   private By passwordField = By.xpath("//div[text()='Password']/following-sibling::div//input");
   private By continueButton = By.xpath("//button[@id='submit-button']");
   private By submitButton = By.xpath("//button[@id='submit-button']");

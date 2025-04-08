@@ -127,12 +127,21 @@ public class Utility {
   // ======================
   // ===== Javascript =====
   // ======================
-  private void scroll(WebElement element, boolean alignToTop) {
+  private void executeJS(String jsScript, Object... elements) {
     JavascriptExecutor executor = (JavascriptExecutor)driver;
-    String jsScript = "arguments[0].scrollIntoView(" + alignToTop + ");";
-    executor.executeScript(jsScript, element);
+    executor.executeScript(jsScript, elements);
   }
 
+  private void scroll(WebElement element, boolean alignToTop) {
+    String jsScript = "arguments[0].scrollIntoView(" + alignToTop + ");";
+    executeJS(jsScript, element);
+  }
+
+  public void scrollToTop() {
+    String jsScript = "window.scrollTo(0, 0)";
+    executeJS(jsScript);
+  }
+  
   public void scrollToElementJS(WebElement element) {
     scroll(element, true);
   }
