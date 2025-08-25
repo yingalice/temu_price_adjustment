@@ -49,6 +49,14 @@ public class Utility {
     return new WebDriverWait(driver, Duration.ofSeconds(seconds));
   }
 
+  public WebElement waitPresenceOfElementLocated(int seconds, By locator) {
+    return webdriver_wait(seconds).until(ExpectedConditions.presenceOfElementLocated(locator));
+  }
+
+  public WebElement waitPresenceOfElementLocated(By locator) {
+    return waitPresenceOfElementLocated(defaultSeconds, locator);
+  }
+
   public WebElement waitVisibilityOfElementLocated(int seconds, By locator) {
     return webdriver_wait(seconds).until(ExpectedConditions.visibilityOfElementLocated(locator));
   }

@@ -8,7 +8,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.asserts.SoftAssert;
 
 import com.temu.pages.HomePage;
-import com.temu.pages.login.LoginPage;
+import com.temu.pages.login.LoginModal;
 
 import utilities.Utility;
 
@@ -37,8 +37,9 @@ public class BaseTest {
     String email = System.getenv("TEMU_EMAIL");
     String password = System.getenv("TEMU_PASSWORD");
     
-    LoginPage loginPage = new LoginPage(driver);
-    homePage = loginPage.loginIntoApplication(email, password);  
+    homePage = new HomePage(driver);
+    LoginModal loginModal = homePage.goToSignInRegister();
+    homePage = loginModal.loginIntoApplication(email, password);  
   }
 
   @AfterClass

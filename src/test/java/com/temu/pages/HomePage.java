@@ -3,7 +3,7 @@ package com.temu.pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-import com.temu.pages.login.LoginPage;
+import com.temu.pages.login.LoginModal;
 import com.temu.pages.orders.AllOrdersPage;
 
 import base.BasePage;
@@ -18,9 +18,9 @@ public class HomePage extends BasePage {
     super(driver, title);
   }
 
-  public LoginPage goToSignInRegister() {
+  public LoginModal goToSignInRegister() {
     utility.click(signInRegisterButton);
-    return new LoginPage(driver);
+    return new LoginModal(driver);
   }
 
   public AllOrdersPage goToOrdersAndAccounts() {

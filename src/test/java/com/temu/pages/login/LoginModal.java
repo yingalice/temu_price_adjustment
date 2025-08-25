@@ -5,18 +5,15 @@ import org.openqa.selenium.WebDriver;
 
 import com.temu.pages.HomePage;
 
-import base.BasePage;
-
-public class LoginPage extends BasePage {
-  public static String title = "Temu | Register & Login";
-  
+public class LoginModal extends HomePage {
   private By emailField = By.xpath("//div[text()='Please enter your email address']/following-sibling::div//input");
   private By passwordField = By.xpath("//div[text()='Password']/following-sibling::div//input");
   private By continueButton = By.xpath("//button[@id='submit-button']");
   private By submitButton = By.xpath("//button[@id='submit-button']");
+  private By helloText = By.xpath("//div[text()[contains(.,'Hello, ')]]");
 
-  public LoginPage(WebDriver driver) {
-    super(driver, title);
+  public LoginModal(WebDriver driver) {
+    super(driver);
   }
   
   public void typeEmail(String email) {
@@ -35,6 +32,7 @@ public class LoginPage extends BasePage {
 
   public HomePage clickSubmitButton() {
     utility.click(submitButton);
+    utility.waitPresenceOfElementLocated(helloText);
     return new HomePage(driver);
   }
 
