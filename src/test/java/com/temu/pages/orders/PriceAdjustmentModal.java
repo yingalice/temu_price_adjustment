@@ -5,7 +5,7 @@ import org.openqa.selenium.WebDriver;
 
 public class PriceAdjustmentModal extends OrderDetailsPage {
 
-  private By priceAdjustmentHeaderText = By.xpath("//div[@data-flag='newUi']/div/div[1]");
+  private By priceAdjustmentHeaderText = By.xpath("//div[@aria-modal='true' and @role='dialog']/div[1]");
 
   public PriceAdjustmentModal(WebDriver driver) {
     super(driver);
