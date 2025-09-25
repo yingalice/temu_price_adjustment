@@ -9,7 +9,7 @@ public class OrderDetailsPage extends BasePage {
   public static String title = "Temu | Order Detail";
 
   private By priceAdjustmentButton = By.xpath("//span[text()='Price adjustment']//parent::div[@role='button']");
-  private By orderItemName = By.xpath("//img[@aria-label='goods banner']/../following-sibling::div/span[@role='button']//span");
+  private By orderItemName = By.xpath("//div[starts-with(@aria-label, 'item picture')]/following-sibling::div/span");
 
   public OrderDetailsPage(WebDriver driver) {
     super(driver, title);
