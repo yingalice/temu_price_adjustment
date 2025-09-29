@@ -9,6 +9,7 @@ import org.openqa.selenium.TimeoutException;
 import com.temu.pages.orders.AllOrdersPage;
 import com.temu.pages.orders.OrderDetailsPage;
 import com.temu.pages.orders.PriceAdjustmentModal;
+import com.temu.pages.orders.SelectARequestModal;
 import com.temu.pages.orders.PriceAdjustmentPage;
 import com.temu.pages.orders.SelectRefundMethodModal;
 
@@ -44,14 +45,16 @@ public class PriceDropTests extends BaseTest {
       OrderDetailsPage orderDetailsPage = allOrdersPage.clickOrderDetailLink(links.get(i));
       String orderItemName = orderDetailsPage.getOrderItemName();
       try {
-        orderDetailsPage.clickPriceAdjustmentButton();
+        orderDetailsPage.clickPriceMatchAdjustmentButton();
       } catch (TimeoutException e) {
-        System.out.println("- [PRICE ADJUSTMENT BUTTON MISSING (30 days)]: \n" +
+        System.out.println("- [PRICE MATCH/ADJUSTMENT BUTTON MISSING (30 days)]: \n" +
                             orderItemName + "\n");
         break;
       }
 
-      // After clicking the price adjustment button, it either leads to
+      SelectARequestModal selectARequestModal = new SelectARequestModal(driver);
+      selectARequestModal.clickRequestAPriceAdjustmentButton();
+      // After clicking the request a price adjustment button, it either leads to
       // 1) modal saying sorry (price did not drop)
       // OR
       // 2) price adjustment page (price dropped)
